@@ -9,6 +9,23 @@ import static org.junit.Assert.*;
 @Ignore
 public class LogicTest {
     @Test
+    public void whenNotWinL2() {
+        Logic logic = new Logic(5) {
+            @Override
+            public int[][] convert() {
+                return new int[][] {
+                        {0, 0, 1, 0, 0},
+                        {0, 0, 0, 0, 0},
+                        {0, 1, 1, 1, 1},
+                        {0, 0, 0, 0, 0},
+                        {0, 0, 0, 0, 0},
+                };
+            }
+        };
+        assertThat(logic.isWin(), is(false));
+    }
+
+    @Test
     public void whenVerticalWin() {
         Logic logic = new Logic(5) {
             @Override
