@@ -1,5 +1,6 @@
 package job4j.tictactoe;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class Logic3T {
@@ -22,31 +23,29 @@ public class Logic3T {
         }
         return result;
     }
-// public boolean isWinnerX() - проверяет есть ли в поле выигрышные комбинации для Крестика.
+
     public boolean isWinnerX() {
-        return this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkX, 0, 1, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkX, 0, 2, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkX, 0, 0, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkX, 1, 0, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkX, 2, 0, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkX, 0,0, 1, 1) ||
-                this.fillBy(Figure3T::hasMarkX, this.table.length - 1 , 0, -1, 1);
+        Predicate<Figure3T> func = Figure3T::hasMarkX;
+        return isWin(func);
     }
 
-//public boolean isWinnerO() - проверяет есть ли в поле выигрышные комбинации для Нолика.
     public boolean isWinnerO() {
-        return this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkO, 0, 1, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkO, 0, 2, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkO, 0, 0, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkO, 0, 1, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkO, 0, 2, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkO, 0,0, 1, 1) ||
-                this.fillBy(Figure3T::hasMarkO, this.table.length - 1, 0, -1, 1);
+        Predicate<Figure3T> func = Figure3T::hasMarkO;
+        return isWin(func);
     }
-//public boolean hasGap() - проверяет, если ли пустые клетки для новых ходов.23
+
+    private boolean isWin (Predicate<Figure3T> func) {
+        return this.fillBy(func, 0, 0, 1, 0) ||
+                this.fillBy(func, 0, 1, 1, 0) ||
+                this.fillBy(func, 0, 2, 1, 0) ||
+                this.fillBy(func, 0, 0, 0, 1) ||
+                this.fillBy(func, 1, 0, 0, 1) ||
+                this.fillBy(func, 2, 0, 0, 1) ||
+                this.fillBy(func, 0,0, 1, 1) ||
+                this.fillBy(func, this.table.length - 1, 0, -1, 1);
+    }
+
     public boolean hasGap() {
-        return true;
+        return !Arrays.stream(table).flatMap(Arrays::stream).allMatch(x -> x.hasMarkO() || x.hasMarkO());
     }
 }
